@@ -1,0 +1,28 @@
+[
+  {
+    "step": 1,
+    "tool_name": "fetch_portal",
+    "decision_type": "policy=fallback",
+    "explanation": "Initial portal retrieval planned to inspect balance and batches.",
+    "input": {
+      "provider": "shop_rewards",
+      "external_id": "tc3_account",
+      "retry_count": 0,
+      "scenario": null
+    },
+    "output": null,
+    "timestamp": "2026-10-20T18:30:00"
+  },
+  {
+    "step": 2,
+    "tool_name": "mark_unchecked",
+    "decision_type": "policy=fallback",
+    "explanation": "HTTP 401 Unauthorized: Invalid credentials. Mark unchecked with no retry permitted.",
+    "input": null,
+    "output": {
+      "error_code": "LOGIN_FAILED",
+      "status": "unchecked"
+    },
+    "timestamp": "2026-10-20T18:30:00"
+  }
+]

@@ -1,0 +1,36 @@
+[build]
+# Railway runs this from the repo root
+builder = "nixpacks"
+
+[build.nixpacksPlan.phases.setup]
+nixPkgs = ["python311", "nodejs_20", "npm-9_x"]
+
+[build.nixpacksPlan.phases.install]
+cmds = [
+  "pip install -r backend/requirements.txt",
+  "cd frontend && npm ci",
+]
+
+[build.nixpacksPlan.phases.build]
+cmds = [
+  "cd frontend && npm run build",
+]
+
+[deploy]
+startCommand = "python -m uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT"
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 3
+
+# Environment variables — set these in the Railway dashboard (Variables tab)
+# Do NOT put real values here; this file is committed to git.
+#
+# Required:
+#   DATABASE_URL        — Railway provides this automatically for Postgres add-on
+#   N8N_SHARED_SECRET   — long random string; same value in n8n credential
+#   PORTAL_BASE_URL     — https://<your-railway-url> (set after first deploy)
+#
+# Optional:
+#   LLM_PROVIDER        — fallback (default) | openai | anthropic | gemini
+#   LLM_API_KEY         — leave blank to use deterministic fallback planner
+#   MOCK_ADMIN_ENABLED  — "false" in prod (default); "true" only in local dev
+#   ENVIRONMENT         — production

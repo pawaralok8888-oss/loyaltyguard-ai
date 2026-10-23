@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: loyaltyguard-ai
+    runtime: python
+    # Pin Python 3.11 — required for zoneinfo + tzdata compatibility
+    pythonVersion: "3.11"
+    rootDir: .
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r backend/requirements.txt
+      cd frontend && npm ci && npm run build
+    startCommand: |
+      python -m uvicorn backend.app.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      # ── Set these in the Render dashboard — do NOT put real values here ──────
+      - key: DATABASE_URL
+        value: sqlite:///./loyaltyguard.db   # replace with Render managed Postgres URL for prod
+      - key: ENVIRONMENT
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: PORT
+        fromService:
+          type: web
+          name: loyaltyguard-ai
+          property: port
+      - key: N8N_SHARED_SECRET
+        sync: false   # must be set manually in Render dashboard
+      - key: PORTAL_BASE_URL
+        sync: false   # set to https://<your-render-url> after first deploy
+      - key: MOCK_ADMIN_ENABLED
+        value: "false"
+      - key: LLM_PROVIDER
+        value: fallback
+      - key: LLM_API_KEY
+        sync: false   # optional; leave blank to use fallback planner
+
+    disk:
+      name: loyaltyguard-data
+      mountPath: /opt/render/project/src
+      sizeGB: 1

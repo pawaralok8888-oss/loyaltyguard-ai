@@ -1,0 +1,84 @@
+[
+  {
+    "step": 1,
+    "tool_name": "fetch_portal",
+    "decision_type": "policy=fallback",
+    "explanation": "Initial portal retrieval planned to inspect balance and batches.",
+    "input": {
+      "provider": "shop_rewards",
+      "external_id": "tc1_account",
+      "retry_count": 0,
+      "scenario": null
+    },
+    "output": null,
+    "timestamp": "2026-10-20T18:30:00"
+  },
+  {
+    "step": 2,
+    "tool_name": "validate_payload",
+    "decision_type": "policy=fallback",
+    "explanation": "Validating raw payload with Pydantic schema and unit consistency constraints.",
+    "input": {
+      "raw_payload": {
+        "account_id": "tc1_account",
+        "provider": "shop_rewards",
+        "unit": "points",
+        "total_balance": 250.0,
+        "batches": [
+          {
+            "batch_id": "tc1_batch",
+            "amount_remaining": 250.0,
+            "expires_at": "2026-10-28"
+          }
+        ]
+      }
+    },
+    "output": null,
+    "timestamp": "2026-10-20T18:30:00"
+  },
+  {
+    "step": 3,
+    "tool_name": "compute_expiries",
+    "decision_type": "policy=fallback",
+    "explanation": "Calculating batches expiring within deterministic 7-day inclusive window.",
+    "input": null,
+    "output": {
+      "expiring_count": 1
+    },
+    "timestamp": "2026-10-20T18:30:00"
+  },
+  {
+    "step": 4,
+    "tool_name": "propose_alert",
+    "decision_type": "policy=fallback",
+    "explanation": "Identified 1 expiring batch(es). Creating deduplicated pending alert proposals.",
+    "input": null,
+    "output": {
+      "created_proposals_count": 0
+    },
+    "timestamp": "2026-10-20T18:30:00"
+  },
+  {
+    "step": 5,
+    "tool_name": "verify_recheck",
+    "decision_type": "policy=fallback",
+    "explanation": "Executing post-run verification re-read to confirm stored vs observed portal state.",
+    "input": null,
+    "output": {
+      "verification_status": "verified"
+    },
+    "timestamp": "2026-10-20T18:30:00"
+  },
+  {
+    "step": 6,
+    "tool_name": "explain",
+    "decision_type": "policy=fallback",
+    "explanation": "Check flow completed. Generating execution briefing.",
+    "input": null,
+    "output": {
+      "final_outcome": "success",
+      "verification_status": "verified"
+    },
+    "timestamp": "2026-10-20T18:30:00"
+  }
+]

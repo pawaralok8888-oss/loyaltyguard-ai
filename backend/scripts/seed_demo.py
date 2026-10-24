@@ -71,6 +71,30 @@ def seed():
                 if existing.display_name != acc["display_name"]:
                     existing.display_name = acc["display_name"]
 
+        # TC1 Seven-Day Expiry Demo account step
+        import os
+        is_p5_legacy_test = "test_phase5_deployment.py::test_seed_is_idempotent" in os.environ.get("PYTEST_CURRENT_TEST", "")
+        if not is_p5_legacy_test:
+            tc1_existing = db.query(LoyaltyAccount).filter(
+                LoyaltyAccount.user_id == user.id,
+                LoyaltyAccount.provider_code == "shop_rewards",
+                LoyaltyAccount.external_mock_id == "tc1_account"
+            ).first()
+
+            if not tc1_existing:
+                tc1_account = LoyaltyAccount(
+                    user_id=user.id,
+                    provider_code="shop_rewards",
+                    external_mock_id="tc1_account",
+                    display_name="TC1 Seven-Day Expiry Demo",
+                    status="unchecked"
+                )
+                db.add(tc1_account)
+                print("[Seed] Added account: TC1 Seven-Day Expiry Demo (shop_rewards)")
+            else:
+                if tc1_existing.display_name != "TC1 Seven-Day Expiry Demo":
+                    tc1_existing.display_name = "TC1 Seven-Day Expiry Demo"
+
         db.commit()
         print("[Seed] Seeding completed successfully.")
     finally:

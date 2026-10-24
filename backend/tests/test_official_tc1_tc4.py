@@ -261,3 +261,51 @@ def test_tc4_partial_expiry(db_session, test_user, client, frozen_clock):
     ).first()
     assert snapshot is not None
     assert snapshot.total_balance == 1200.0
+
+
+def test_tc1_seed_creates_account_exactly_once_when_run_twice(db_session):
+    """
+    Verifies that seed() creates tc1_account with expected attributes
+    and does so idempotently (exactly once when run twice).
+    """
+    from sqlalchemy import create_engine
+    from sqlalchemy.orm import sessionmaker
+    from sqlalchemy.pool import StaticPool
+    import backend.scripts.seed_demo as seed_module
+
+    engine = create_engine(
+        "sqlite:///:memory:",
+        connect_args={"check_same_thread": False},
+        poolclass=StaticPool
+    )
+    from backend.app.db import Base
+    Base.metadata.create_all(bind=engine)
+    Session = sessionmaker(bind=engine)
+
+    original_session = seed_module.SessionLocal
+    original_engine = seed_module.engine
+
+    try:
+        seed_module.SessionLocal = Session
+        seed_module.engine = engine
+
+        # First run
+        seed_module.seed()
+        # Second run (idempotency check)
+        seed_module.seed()
+
+        session = Session()
+        tc1_accounts = session.query(LoyaltyAccount).filter(
+            LoyaltyAccount.provider_code == "shop_rewards",
+            LoyaltyAccount.external_mock_id == "tc1_account"
+        ).all()
+        session.close()
+
+        assert len(tc1_accounts) == 1, f"Expected exactly 1 tc1_account, got {len(tc1_accounts)}"
+        acc = tc1_accounts[0]
+        assert acc.display_name == "TC1 Seven-Day Expiry Demo"
+        assert acc.status == "unchecked"
+    finally:
+        seed_module.SessionLocal = original_session
+        seed_module.engine = original_engine
+

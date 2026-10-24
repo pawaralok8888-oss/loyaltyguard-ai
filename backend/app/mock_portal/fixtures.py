@@ -22,9 +22,9 @@ DEFAULT_FIXTURES = {
             "account_id": "tc1_account",
             "provider": "shop_rewards",
             "unit": "points",
-            "total_balance": 250.0,
+            "total_balance": 250,
             "batches": [
-                {"batch_id": "tc1_batch", "amount_remaining": 250.0, "expires_at": "2026-10-28"}
+                {"batch_id": "tc1_batch_A", "amount_remaining": 250, "expires_at": "2026-10-28"}
             ]
         },
         "tc4_account": {

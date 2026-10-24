@@ -3,8 +3,9 @@ platform win32 -- Python 3.11.9, pytest-9.1.1, pluggy-1.7.0 -- C:\Users\Admin\Do
 cachedir: .pytest_cache
 rootdir: C:\Users\Admin\Downloads\Data P\loyaltyguard-ai
 configfile: pytest.ini
+testpaths: backend/tests
 plugins: anyio-4.15.1
-collecting ... collected 32 items
+collecting ... collected 33 items
 
 backend/tests/test_agent_planner_phase3.py::test_verify_post_run_verified_and_mismatch_outcomes PASSED [  3%]
 backend/tests/test_agent_planner_phase3.py::test_verification_status_stored_on_check_run PASSED [  6%]
@@ -13,30 +14,31 @@ backend/tests/test_agent_planner_phase3.py::test_agent_timeout_one_retry_then_un
 backend/tests/test_agent_planner_phase3.py::test_agent_401_no_retry_mark_unchecked PASSED [ 15%]
 backend/tests/test_agent_planner_phase3.py::test_agent_llm_disallowed_tool_safe_fallback PASSED [ 18%]
 backend/tests/test_agent_planner_phase3.py::test_planner_decision_alters_execution_flow PASSED [ 21%]
-backend/tests/test_agent_planner_phase3.py::test_valid_llm_planner_path PASSED [ 25%]
-backend/tests/test_agent_planner_phase3.py::test_failed_send_can_be_retried PASSED [ 28%]
-backend/tests/test_api_endpoints.py::test_api_check_and_runs_endpoints PASSED [ 31%]
-backend/tests/test_api_endpoints.py::test_api_bulk_check_shared_secret PASSED [ 34%]
-backend/tests/test_api_endpoints.py::test_api_expiries_and_calendar_endpoints PASSED [ 37%]
-backend/tests/test_extra.py::test_boundary_window_inclusion_and_exclusion PASSED [ 40%]
-backend/tests/test_extra.py::test_malformed_negative_amount_fails_validation PASSED [ 43%]
-backend/tests/test_extra.py::test_mixed_units_rejected PASSED            [ 46%]
-backend/tests/test_extra.py::test_verification_re_read_failure PASSED    [ 50%]
-backend/tests/test_extra.py::test_pending_alert_cannot_send PASSED       [ 53%]
+backend/tests/test_agent_planner_phase3.py::test_valid_llm_planner_path PASSED [ 24%]
+backend/tests/test_agent_planner_phase3.py::test_failed_send_can_be_retried PASSED [ 27%]
+backend/tests/test_api_endpoints.py::test_api_check_and_runs_endpoints PASSED [ 30%]
+backend/tests/test_api_endpoints.py::test_api_bulk_check_shared_secret PASSED [ 33%]
+backend/tests/test_api_endpoints.py::test_api_expiries_and_calendar_endpoints PASSED [ 36%]
+backend/tests/test_extra.py::test_boundary_window_inclusion_and_exclusion PASSED [ 39%]
+backend/tests/test_extra.py::test_malformed_negative_amount_fails_validation PASSED [ 42%]
+backend/tests/test_extra.py::test_mixed_units_rejected PASSED            [ 45%]
+backend/tests/test_extra.py::test_verification_re_read_failure PASSED    [ 48%]
+backend/tests/test_extra.py::test_pending_alert_cannot_send PASSED       [ 51%]
 backend/tests/test_extra.py::test_rejected_alert_cannot_send PASSED      [ 56%]
-backend/tests/test_extra.py::test_approved_alert_sends_idempotently PASSED [ 59%]
-backend/tests/test_official_tc1_tc4.py::test_tc1_seven_day_expiry PASSED [ 62%]
-backend/tests/test_official_tc1_tc4.py::test_tc2_unchanged_balance_deduplication PASSED [ 65%]
-backend/tests/test_official_tc1_tc4.py::test_tc2_dedupe_survives_real_process_restart PASSED [ 68%]
-backend/tests/test_official_tc1_tc4.py::test_tc3_login_failure PASSED    [ 71%]
-backend/tests/test_official_tc1_tc4.py::test_tc4_partial_expiry PASSED   [ 75%]
+backend/tests/test_extra.py::test_approved_alert_sends_idempotently PASSED [ 57%]
+backend/tests/test_official_tc1_tc4.py::test_tc1_seven_day_expiry PASSED [ 60%]
+backend/tests/test_official_tc1_tc4.py::test_tc2_unchanged_balance_deduplication PASSED [ 63%]
+backend/tests/test_official_tc1_tc4.py::test_tc2_dedupe_survives_real_process_restart PASSED [ 66%]
+backend/tests/test_official_tc1_tc4.py::test_tc3_login_failure PASSED    [ 69%]
+backend/tests/test_official_tc1_tc4.py::test_tc4_partial_expiry PASSED   [ 72%]
+backend/tests/test_official_tc1_tc4.py::test_tc1_seed_creates_account_exactly_once_when_run_twice PASSED [ 75%]
 backend/tests/test_phase5_deployment.py::test_mock_admin_blocked_when_flag_false PASSED [ 78%]
 backend/tests/test_phase5_deployment.py::test_mock_admin_allowed_when_flag_true PASSED [ 81%]
 backend/tests/test_phase5_deployment.py::test_mock_admin_wrong_secret PASSED [ 84%]
 backend/tests/test_phase5_deployment.py::test_bulk_check_requires_secret PASSED [ 87%]
 backend/tests/test_phase5_deployment.py::test_bulk_check_wrong_secret PASSED [ 90%]
 backend/tests/test_phase5_deployment.py::test_health_check_fields PASSED [ 93%]
-backend/tests/test_phase5_deployment.py::test_seed_is_idempotent PASSED  [ 96%]
+backend/tests/test_seed_is_idempotent PASSED  [ 96%]
 backend/tests/test_portal_base_url_configurable PASSED [100%]
 
-============================= 32 passed in 3.56s ==============================
+============================= 33 passed in 3.47s ==============================

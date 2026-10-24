@@ -135,18 +135,18 @@ export const ProgramBadge: React.FC<{
 }> = ({ providerCode = '', displayName = '', size = 'md' }) => {
   // Determine initials
   let initials = '';
-  if (providerCode === 'shop_rewards') {
+  if (displayName.includes('TC1')) {
+    initials = 'T1';
+  } else if (displayName.includes('TC3')) {
+    initials = 'T3';
+  } else if (displayName.includes('TC4')) {
+    initials = 'T4';
+  } else if (providerCode === 'shop_rewards') {
     initials = 'SR';
   } else if (providerCode === 'fly_miles') {
     initials = 'FM';
   } else if (providerCode === 'gift_hub') {
     initials = 'GH';
-  } else if (displayName.includes('TC3')) {
-    initials = 'T3';
-  } else if (displayName.includes('TC4')) {
-    initials = 'T4';
-  } else if (displayName.includes('TC1')) {
-    initials = 'T1';
   } else if (displayName) {
     const parts = displayName.trim().split(/\s+/);
     initials = parts.length >= 2 ? (parts[0][0] + parts[1][0]).toUpperCase() : displayName.slice(0, 2).toUpperCase();
@@ -156,14 +156,16 @@ export const ProgramBadge: React.FC<{
 
   // Calm fintech palette for programs
   let colorClasses = 'bg-indigo-50 text-indigo-700 border-indigo-200';
-  if (providerCode === 'fly_miles') {
-    colorClasses = 'bg-sky-50 text-sky-700 border-sky-200';
-  } else if (providerCode === 'gift_hub') {
-    colorClasses = 'bg-emerald-50 text-emerald-700 border-emerald-200';
+  if (initials === 'T1') {
+    colorClasses = 'bg-indigo-50 text-indigo-700 border-indigo-200';
   } else if (initials === 'T3') {
     colorClasses = 'bg-rose-50 text-rose-700 border-rose-200';
   } else if (initials === 'T4') {
     colorClasses = 'bg-amber-50 text-amber-700 border-amber-200';
+  } else if (providerCode === 'fly_miles') {
+    colorClasses = 'bg-sky-50 text-sky-700 border-sky-200';
+  } else if (providerCode === 'gift_hub') {
+    colorClasses = 'bg-emerald-50 text-emerald-700 border-emerald-200';
   }
 
   const sizeClasses =

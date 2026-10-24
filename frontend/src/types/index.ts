@@ -66,4 +66,6 @@ export interface HealthStatus {
   clock_utc: string;
   clock_local: string;
   environment: string;
+  planner_mode?: string;
+  llm_provider?: string;
 }

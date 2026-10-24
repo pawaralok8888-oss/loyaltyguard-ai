@@ -27,21 +27,28 @@ def seed():
         # Seed initial synthetic accounts if not present
         accounts_data = [
             {
-                "provider_code": "shop_rewards",
-                "external_mock_id": "demo_shop_01",
-                "display_name": "ShopRewards Club"
-            },
-            {
-                "provider_code": "fly_miles",
-                "external_mock_id": "demo_fly_01",
-                "display_name": "FlyMiles SkyPass"
-            },
-            {
                 "provider_code": "gift_hub",
                 "external_mock_id": "demo_gift_01",
                 "display_name": "GiftHub INR Voucher Card"
+            },
+            {
+                "provider_code": "shop_rewards",
+                "external_mock_id": "tc3_account",
+                "display_name": "TC3 Login-Fail Demo"
+            },
+            {
+                "provider_code": "shop_rewards",
+                "external_mock_id": "tc4_account",
+                "display_name": "TC4 Partial-Expiry Demo"
             }
         ]
+
+        # Fix any legacy display name typo in database
+        legacy_github = db.query(LoyaltyAccount).filter(
+            LoyaltyAccount.display_name == "GitHub INR Voucher Card"
+        ).all()
+        for leg in legacy_github:
+            leg.display_name = "GiftHub INR Voucher Card"
 
         for acc in accounts_data:
             existing = db.query(LoyaltyAccount).filter(
@@ -60,6 +67,9 @@ def seed():
                 )
                 db.add(account)
                 print(f"[Seed] Added account: {acc['display_name']} ({acc['provider_code']})")
+            else:
+                if existing.display_name != acc["display_name"]:
+                    existing.display_name = acc["display_name"]
 
         db.commit()
         print("[Seed] Seeding completed successfully.")

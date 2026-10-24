@@ -82,7 +82,11 @@ def get_mock_account_data(
     scenario: Optional[str] = Query(None)
 ):
     key = f"{provider}:{external_id}"
-    effective_scenario = x_mock_scenario or scenario or scenario_overrides.get(key, "success")
+    default_scenario = (
+        "login_fail" if external_id == "tc3_account"
+        else ("partial_expiry" if external_id == "tc4_account" else "success")
+    )
+    effective_scenario = x_mock_scenario or scenario or scenario_overrides.get(key, default_scenario)
 
     # 1. Login Failure scenario (HTTP 401)
     if effective_scenario == "login_fail":

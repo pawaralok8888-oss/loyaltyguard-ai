@@ -9,45 +9,72 @@ import { api } from './api/client';
 
 export const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'dashboard' | 'accounts' | 'calendar' | 'alerts' | 'agent'>('dashboard');
-  const [health, setHealth] = useState<{ status: string; clock_utc: string; clock_local: string } | null>(null);
+  const [health, setHealth] = useState<{ status: string; clock_utc: string; clock_local: string; planner_mode?: string } | null>(null);
+  const [currentTime, setCurrentTime] = useState<Date>(new Date());
+  const [clockOffsetMs, setClockOffsetMs] = useState<number>(0);
 
   useEffect(() => {
     api.getHealth()
-      .then(setHealth)
+      .then((data: any) => {
+        setHealth(data);
+        if (data.clock_utc || data.clock_local) {
+          const serverMs = new Date(data.clock_utc || data.clock_local).getTime();
+          setClockOffsetMs(serverMs - Date.now());
+        }
+      })
       .catch(() => {});
   }, []);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const displayDate = new Date(currentTime.getTime() + clockOffsetMs);
+  const kolkataTimeStr = displayDate.toLocaleTimeString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true,
+  });
+
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800">
+    <div className="min-h-screen flex flex-col bg-slate-50/70 text-slate-900 font-sans antialiased">
       {/* Top Navbar */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
+      <header className="bg-white border-b border-slate-200/80 sticky top-0 z-30 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
           <div className="flex items-center space-x-3">
-            <div className="bg-blue-600 text-white p-2 rounded-lg shadow-sm">
+            <div className="bg-indigo-600 text-white p-2 rounded-xl shadow-xs ring-2 ring-indigo-50">
               <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-slate-900 tracking-tight">LoyaltyGuard AI</h1>
-              <p className="text-xs text-slate-500 hidden sm:block">Points Expiry Tracker & Human Approval Agent</p>
+              <div className="flex items-center space-x-2">
+                <h1 className="text-lg font-bold text-slate-900 tracking-tight">LoyaltyGuard AI</h1>
+                <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-indigo-50 text-indigo-700 border border-indigo-200/60 uppercase tracking-wide">
+                  Demo
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 hidden sm:block">Points Expiry Tracker & Human-in-the-Loop Agent</p>
             </div>
           </div>
 
           {/* Clock & Status */}
-          <div className="flex items-center space-x-4 text-xs text-slate-500">
-            {health && (
-              <div className="hidden md:flex items-center space-x-2 bg-slate-100 px-3 py-1.5 rounded-md font-mono">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>Kolkata: {new Date(health.clock_local).toLocaleTimeString()}</span>
-              </div>
-            )}
-            <span className="bg-blue-50 text-blue-700 font-medium px-2.5 py-1 rounded border border-blue-200">
-              Agentic Fallback: Active
+          <div className="flex items-center space-x-2 sm:space-x-3 text-xs">
+            <div className="flex items-center space-x-2 bg-slate-100/80 px-2.5 py-1.5 rounded-lg font-mono text-slate-700 border border-slate-200/60 text-[11px] sm:text-xs">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span>Kolkata (IST): {kolkataTimeStr}</span>
+            </div>
+            <span className="bg-indigo-50 text-indigo-700 font-medium px-2.5 py-1.5 rounded-lg border border-indigo-200/80 text-[11px] sm:text-xs whitespace-nowrap shadow-xs">
+              {health?.planner_mode || "Planner: rule-based (LLM off)"}
             </span>
           </div>
         </div>
 
         {/* Navigation Tabs */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-100 flex space-x-1 sm:space-x-8 overflow-x-auto text-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-slate-100 flex space-x-2 sm:space-x-8 overflow-x-auto text-sm no-scrollbar">
           {[
             { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
             { id: 'accounts', label: 'Accounts', icon: UserCheck },
@@ -61,13 +88,13 @@ export const App: React.FC = () => {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as any)}
-                className={`flex items-center py-3.5 px-3 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition ${
+                className={`flex items-center py-3.5 px-3 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap transition-colors duration-150 ${
                   isActive
-                    ? 'border-blue-600 text-blue-600'
-                    : 'border-transparent text-slate-500 hover:text-slate-800 hover:border-slate-300'
+                    ? 'border-indigo-600 text-indigo-600 font-semibold'
+                    : 'border-transparent text-slate-600 hover:text-slate-900 hover:border-slate-300'
                 }`}
               >
-                <Icon className="w-4 h-4 mr-2" />
+                <Icon className="w-4 h-4 mr-2 flex-shrink-0" />
                 {tab.label}
               </button>
             );

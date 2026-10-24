@@ -67,10 +67,17 @@ app.include_router(runs_router)
 
 @app.get("/health", tags=["health"])
 def health_check():
+    planner_mode = (
+        f"Planner: {settings.LLM_PROVIDER} (LLM on)"
+        if (settings.LLM_API_KEY and settings.LLM_PROVIDER != "fallback")
+        else "Planner: rule-based (LLM off)"
+    )
     return {
         "status": "healthy",
         "clock_utc": Clock.now_utc().isoformat(),
         "clock_local": Clock.now_local().isoformat(),
-        "environment": settings.ENVIRONMENT
+        "environment": settings.ENVIRONMENT,
+        "planner_mode": planner_mode,
+        "llm_provider": settings.LLM_PROVIDER
     }
 

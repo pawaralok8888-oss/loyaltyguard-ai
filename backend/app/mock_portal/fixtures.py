@@ -26,6 +26,16 @@ DEFAULT_FIXTURES = {
             "batches": [
                 {"batch_id": "tc1_batch", "amount_remaining": 250.0, "expires_at": "2026-10-28"}
             ]
+        },
+        "tc4_account": {
+            "account_id": "tc4_account",
+            "provider": "shop_rewards",
+            "unit": "points",
+            "total_balance": 1200.0,
+            "batches": [
+                {"batch_id": "batch_A", "amount_remaining": 300.0, "expires_at": "2026-10-25"},
+                {"batch_id": "batch_B", "amount_remaining": 900.0, "expires_at": "2026-12-31"}
+            ]
         }
     },
     "fly_miles": {

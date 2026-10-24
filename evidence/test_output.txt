@@ -37,6 +37,6 @@ backend/tests/test_phase5_deployment.py::test_bulk_check_requires_secret PASSED 
 backend/tests/test_phase5_deployment.py::test_bulk_check_wrong_secret PASSED [ 90%]
 backend/tests/test_phase5_deployment.py::test_health_check_fields PASSED [ 93%]
 backend/tests/test_phase5_deployment.py::test_seed_is_idempotent PASSED  [ 96%]
-backend/tests/test_phase5_deployment.py::test_portal_base_url_configurable PASSED [100%]
+backend/tests/test_portal_base_url_configurable PASSED [100%]
 
-============================= 32 passed in 3.52s ==============================
+============================= 32 passed in 3.56s ==============================

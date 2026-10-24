@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     HOST: str = "127.0.0.1"
     PORT: int = 8000
     ENVIRONMENT: str = "development"
-    N8N_SHARED_SECRET: str = "loyaltyguard-n8n-dev-secret-2026"
+    N8N_SHARED_SECRET: str = ""
     LLM_PROVIDER: str = "fallback"
     LLM_API_KEY: str = ""
     FROZEN_DATETIME: str = ""

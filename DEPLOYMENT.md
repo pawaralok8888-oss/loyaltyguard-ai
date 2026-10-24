@@ -166,7 +166,7 @@ cd ..
 python -m uvicorn backend.app.main:app --reload --host 127.0.0.1 --port 8000
 
 # Terminal 2 — smoke test local
-python smoke_test.py --base-url http://127.0.0.1:8000 --secret loyaltyguard-n8n-dev-secret-2026
+python smoke_test.py --base-url http://127.0.0.1:8000 --secret YOUR_N8N_SHARED_SECRET
 ```
 
 > Note: in local dev `MOCK_ADMIN_ENABLED` defaults to `true` (set in conftest),

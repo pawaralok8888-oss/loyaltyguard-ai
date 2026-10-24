@@ -1,4 +1,6 @@
 import os
+os.environ["N8N_SHARED_SECRET"] = "test-secret-only-for-pytest"
+
 from datetime import datetime
 from zoneinfo import ZoneInfo
 import pytest
@@ -17,6 +19,15 @@ from sqlalchemy.pool import StaticPool
 # Enable mock admin endpoints for the test environment (must patch the singleton
 # because pydantic-settings reads env at import time, before setdefault would apply)
 settings.MOCK_ADMIN_ENABLED = "true"
+settings.N8N_SHARED_SECRET = "test-secret-only-for-pytest"
+
+
+@pytest.fixture(scope="session", autouse=True)
+def configure_test_secrets():
+    """Ensures test-only secrets and settings are configured for the entire test session."""
+    settings.N8N_SHARED_SECRET = "test-secret-only-for-pytest"
+    settings.MOCK_ADMIN_ENABLED = "true"
+    yield
 
 # In-memory test SQLite DB
 TEST_DATABASE_URL = "sqlite:///:memory:"
